@@ -1,0 +1,274 @@
+﻿CREATE TABLE flights (
+  flight_id VARCHAR(30) PRIMARY KEY,
+  source VARCHAR(30),
+  destination VARCHAR(30),
+  date DATE,
+  boarding_time TIME,
+  airline VARCHAR(30),
+  pilot_id VARCHAR(30),
+  hangar_id VARCHAR(30),
+  capacity INT,
+  booked INT,
+  FOREIGN KEY (pilot_id) REFERENCES pilots(pilot_id),
+  FOREIGN KEY (hangar_id) REFERENCES hangar(hangar_id),
+  FOREIGN KEY (airline) REFERENCES airlines(airline_name)
+);
+
+
+CREATE TABLE tickets (
+  ticket_number INT PRIMARY KEY,
+  flight_id VARCHAR(30),
+  price DECIMAL(7, 5),
+  seat_number VARCHAR(30),
+  class VARCHAR(30),
+  FOREIGN KEY (flight_id) REFERENCES flights(flight_id)
+);
+
+
+CREATE TABLE hangar (
+  hangar_id VARCHAR(30) PRIMARY KEY,
+  hangar_capacity INT
+);
+
+
+CREATE TABLE users (
+  first_name VARCHAR(30),
+  last_name VARCHAR(30),
+  username VARCHAR(30) PRIMARY KEY,
+  passport VARCHAR(30),
+  nid VARCHAR(30),
+  date_of_birth DATE,
+  city VARCHAR(30),
+  country VARCHAR(30),
+  phone_no int,
+  email VARCHAR(50),
+  password VARCHAR(50)
+);
+
+
+CREATE TABLE admins (
+  first_name VARCHAR(30),
+  last_name VARCHAR(30),
+  admin_id VARCHAR(30) PRIMARY KEY,
+  password VARCHAR(50)
+);
+
+CREATE TABLE registration_code (
+  registration_code VARCHAR(30) PRIMARY KEY,
+);
+
+
+CREATE TABLE booked_flights (
+  username VARCHAR(30),
+  flight_id VARCHAR(30),
+  ticket_number INT PRIMARY KEY,
+  price DECIMAL(7, 5),
+  seat_number VARCHAR(30),
+  class VARCHAR(30),
+  FOREIGN KEY (username) REFERENCES users(username),
+  FOREIGN KEY (flight_id) REFERENCES flights(flight_id)
+);
+
+
+CREATE TABLE other_staff (
+  first_name VARCHAR(30),
+  last_name VARCHAR(30),
+  id VARCHAR(30) PRIMARY KEY,
+  job VARCHAR(30),
+  hangar_id VARCHAR(30),
+  FOREIGN KEY (hangar_id) REFERENCES hangar(hangar_id)
+);
+
+
+CREATE TABLE airlines (
+  airline_name VARCHAR(30) PRIMARY KEY,
+  no_of_planes INT,
+  no_of_pilots INT
+);
+
+
+CREATE TABLE pilots (
+  first_name VARCHAR(30),
+  last_name VARCHAR(30),
+  pilot_id VARCHAR(30) PRIMARY KEY,
+  airline_name VARCHAR(30)
+  FOREIGN KEY (airline_name) REFERENCES airlines(airline_name)
+);
+
+
+INSERT INTO registration_code (registration_code)
+VALUES
+  ('random');
+
+INSERT INTO hangar (hangar_id, hangar_capacity)
+VALUES
+  ('HNGR001', 10),
+  ('HNGR002', 15),
+  ('HNGR003', 10),
+  ('HNGR004', 10),
+  ('HNGR005', 10),
+  ('HNGR006', 20),
+  ('HNGR007', 10),
+  ('HNGR008', 10),
+  ('HNGR009', 10),
+  ('HNGR010', 15);
+
+
+INSERT INTO airlines (airline_name, no_of_planes, no_of_pilots)
+VALUES
+  ('Delta Air Lines', '50', '150'),
+  ('United Airlines', '60', '180'),
+  ('American Airlines', '40', '120'),
+  ('Lufthansa', '45', '140'),
+  ('Emirates', '30', '100'),
+  ('Air France', '35', '110'),
+  ('Qatar Airways', '25', '80'),
+  ('Singapore Airlines', '28', '90'),
+  ('Cathay Pacific', '20', '70'),
+  ('British Airways', '42', '130');
+
+
+INSERT INTO pilots (first_name, last_name, pilot_id, airline_name)
+VALUES
+  ('John', 'Smith', 1, 'Delta Air Lines'),
+  ('Emily', 'Johnson', 2, 'United Airlines'),
+  ('Michael', 'Williams', 3, 'American Airlines'),
+  ('Jessica', 'Jones', 4, 'Lufthansa'),
+  ('David', 'Brown', 5, 'Emirates'),
+  ('Jennifer', 'Davis', 6, 'Air France'),
+  ('Daniel', 'Miller', 7, 'Qatar Airways'),
+  ('Emma', 'Wilson', 8, 'Singapore Airlines'),
+  ('Christopher', 'Moore', 9, 'Cathay Pacific'),
+  ('Olivia', 'Anderson', 10, 'British Airways');
+
+
+INSERT INTO other_staff (first_name, last_name, id, job, hangar_id)
+VALUES
+  ('Robert', 'Johnson', 'S001', 'Technician', 'HNGR001'),
+  ('Sarah', 'Williams', 'S002', 'Maintenance', 'HNGR002'),
+  ('Ryan', 'Miller', 'S003', 'Cleaner', 'HNGR003'),
+  ('Rebecca', 'Jones', 'S004', 'Security', 'HNGR004'),
+  ('Daniel', 'Wilson', 'S005', 'Technician', 'HNGR005'),
+  ('Sophia', 'Moore', 'S006', 'Maintenance', 'HNGR006'),
+  ('Matthew', 'Davis', 'S007', 'Cleaner', 'HNGR007'),
+  ('Emma', 'Brown', 'S008', 'Security', 'HNGR008'),
+  ('Christopher', 'Anderson', 'S009', 'Technician', 'HNGR009'),
+  ('Olivia', 'Smith', 'S010', 'Maintenance', 'HNGR010');
+
+
+INSERT INTO flights (flight_id, source, destination, date, boarding_time, airline, pilot_id, hangar_id, capacity, booked)
+VALUES
+  (1, 'Dhaka', 'Los Angeles', '2023-12-15', '12:00:00', 'Emirates', 1, 'HNGR001', 10, 0),
+  (2, 'Dhaka', 'Toronto', '2023-12-16', '14:30:00', 'United Airlines', 2, 'HNGR002', 10, 0),
+  (3, 'Los Angeles', 'Delhi', '2023-12-17', '10:45:00', 'Singapore Airlines', 3, 'HNGR003', 10, 0),
+  (4, 'Delhi', 'Toronto', '2023-12-18', '08:00:00', 'Qatar Airways', 4, 'HNGR004', 10, 0),
+  (5, 'Los Angeles', 'London', '2023-12-19', '16:15:00', 'Emirates', 5, 'HNGR005', 10, 0),
+  (6, 'Dhaka', 'London', '2023-12-20', '13:20:00', 'Air France', 6, 'HNGR006', 10, 0),
+  (7, 'Delhi', 'Dhaka', '2023-12-21', '09:30:00', 'Qatar Airways', 7, 'HNGR007', 10, 0),
+  (8, 'Paris', 'Bangkok', '2023-12-22', '11:10:00', 'Singapore Airlines', 8, 'HNGR008', 10, 0),
+  (9, 'Paris', 'Shanghai', '2023-12-23', '17:45:00', 'Emirates', 9, 'HNGR009', 10, 0),
+  (10, 'London', 'Paris', '2023-12-24', '15:00:00', 'British Airways', 10, 'HNGR010', 10, 0);
+
+
+INSERT INTO tickets (flight_id, ticket_number, price, seat_number, class)
+VALUES
+  (1, 1, 500.00, 'A1', 'Business'),
+  (1, 2, 400.00, 'A2', 'First Class'),
+  (1, 3, 300.00, 'B1', 'First Class'),
+  (1, 4, 250.00, 'B2', 'Economy'),
+  (1, 5, 200.00, 'C1', 'Economy'),
+  (1, 6, 150.00, 'C2', 'Economy'),
+  (1, 7, 100.00, 'D1', 'Economy'),
+  (1, 8, 80.00, 'D2', 'Economy'),
+  (1, 9, 70.00, 'E1', 'Economy'),
+  (1, 10, 60.00, 'E2', 'Economy'),
+  (2, 11, 550.00, 'A1', 'Business'),
+  (2, 12, 450.00, 'A2', 'Business'),
+  (2, 13, 350.00, 'B1', 'Economy'),
+  (2, 14, 300.00, 'B2', 'First Class'),
+  (2, 15, 250.00, 'C1', 'Economy'),
+  (2, 16, 200.00, 'C2', 'Economy'),
+  (2, 17, 150.00, 'D1', 'First Class'),
+  (2, 18, 120.00, 'D2', 'Economy'),
+  (2, 19, 100.00, 'E1', 'Economy'),
+  (2, 20, 90.00, 'E2', 'Economy'),
+ (3, 21, 600.00, 'A1', 'Business'),
+  (3, 22, 500.00, 'A2', 'Business'),
+  (3, 23, 400.00, 'B1', 'Economy'),
+  (3, 24, 350.00, 'B2', 'Economy'),
+  (3, 25, 300.00, 'C1', 'Economy'),
+  (3, 26, 250.00, 'C2', 'First Class'),
+  (3, 27, 200.00, 'D1', 'Economy'),
+  (3, 28, 180.00, 'D2', 'Economy'),
+  (3, 29, 150.00, 'E1', 'Economy'),
+  (3, 30, 130.00, 'E2', 'Economy'),
+  (4, 31, 650.00, 'A1', 'Business'),
+  (4, 32, 550.00, 'A2', 'Business'),
+  (4, 33, 450.00, 'B1', 'Economy'),
+  (4, 34, 400.00, 'B2', 'Economy'),
+  (4, 35, 350.00, 'C1', 'Economy'),
+  (4, 36, 300.00, 'C2', 'Economy'),
+  (4, 37, 250.00, 'D1', 'First Class'),
+  (4, 38, 230.00, 'D2', 'Economy'),
+  (4, 39, 200.00, 'E1', 'Economy'),
+  (4, 40, 180.00, 'E2', 'First Class'),
+  (5, 41, 700.00, 'A1', 'Business'),
+  (5, 42, 600.00, 'A2', 'Business'),
+  (5, 43, 500.00, 'B1', 'Economy'),
+  (5, 44, 450.00, 'B2', 'Economy'),
+  (5, 45, 400.00, 'C1', 'First Class'),
+  (5, 46, 350.00, 'C2', 'First Class'),
+  (5, 47, 300.00, 'D1', 'Economy'),
+  (5, 48, 280.00, 'D2', 'Economy'),
+  (5, 49, 250.00, 'E1', 'Economy'),
+  (5, 50, 230.00, 'E2', 'Economy'),
+  (6, 51, 750.00, 'A1', 'Business'),
+  (6, 52, 650.00, 'A2', 'Business'),
+  (6, 53, 550.00, 'B1', 'Economy'),
+  (6, 54, 500.00, 'B2', 'Economy'),
+  (6, 55, 450.00, 'C1', 'First Class'),
+  (6, 56, 400.00, 'C2', 'Economy'),
+  (6, 57, 350.00, 'D1', 'Economy'),
+  (6, 58, 330.00, 'D2', 'Economy'),
+  (6, 59, 300.00, 'E1', 'Economy'),
+  (6, 60, 280.00, 'E2', 'Economy'),
+  (7, 61, 800.00, 'A1', 'Business'),
+  (7, 62, 700.00, 'A2', 'Business'),
+  (7, 63, 600.00, 'B1', 'Economy'),
+  (7, 64, 550.00, 'B2', 'Economy'),
+  (7, 65, 500.00, 'C1', 'Economy'),
+  (7, 66, 450.00, 'C2', 'Economy'),
+  (7, 67, 400.00, 'D1', 'Economy'),
+  (7, 68, 380.00, 'D2', 'Economy'),
+  (7, 69, 350.00, 'E1', 'Economy'),
+  (7, 70, 330.00, 'E2', 'Economy'),
+  (8, 71, 850.00, 'A1', 'Business'),
+  (8, 72, 750.00, 'A2', 'Business'),
+  (8, 73, 650.00, 'B1', 'Economy'),
+  (8, 74, 600.00, 'B2', 'Economy'),
+  (8, 75, 550.00, 'C1', 'First Class'),
+  (8, 76, 500.00, 'C2', 'Economy'),
+  (8, 77, 450.00, 'D1', 'Economy'),
+  (8, 78, 430.00, 'D2', 'Economy'),
+  (8, 79, 400.00, 'E1', 'Economy'),
+  (8, 80, 380.00, 'E2', 'Economy'),
+  (9, 81, 900.00, 'A1', 'Business'),
+  (9, 82, 800.00, 'A2', 'Business'),
+  (9, 83, 700.00, 'B1', 'Economy'),
+  (9, 84, 650.00, 'B2', 'Economy'),
+  (9, 85, 600.00, 'C1', 'Economy'),
+  (9, 86, 550.00, 'C2', 'Economy'),
+  (9, 87, 500.00, 'D1', 'Economy'),
+  (9, 88, 480.00, 'D2', 'Economy'),
+  (9, 89, 450.00, 'E1', 'Economy'),
+  (9, 90, 430.00, 'E2', 'Economy'),
+  (10, 91, 950.00, 'A1', 'Business'),
+  (10, 92, 850.00, 'A2', 'Business'),
+  (10, 93, 750.00, 'B1', 'First Class'),
+  (10, 94, 700.00, 'B2', 'Economy'),
+  (10, 95, 650.00, 'C1', 'Economy'),
+  (10, 96, 600.00, 'C2', 'Economy'),
+  (10, 97, 550.00, 'D1', 'Economy'),
+  (10, 98, 530.00, 'D2', 'Economy'),
+  (10, 99, 500.00, 'E1', 'Economy'),
+  (10, 100, 480.00, 'E2', 'Economy');
